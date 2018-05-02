@@ -20,6 +20,7 @@ platformList.each { platform ->
     // Calculate names
     def (os, architecture, configuration) = platform.tokenize(':')
     def osUsedForMachineAffinity = os;
+    def osVersionUsedForMachineAffinity = 'latest-or-auto';
 
     // Calculate job name
     def jobName = getBuildJobName(configuration, os, architecture)
@@ -59,6 +60,11 @@ set DOTNET_CLI_UI_LANGUAGE=es
         osUsedForMachineAffinity = 'Ubuntu16.04';
         buildCommand = "./build.sh --skip-prereqs --configuration ${configuration} --runtime-id linux-musl-x64 --docker alpine.3.6 --targets Default"
     }
+    else if (os == 'ubuntu.18.04' || os == 'fedora.27' || os == 'opensuse.43.2') {
+        osUsedForMachineAffinity = 'Ubuntu16.04'
+        osVersionUsedForMachineAffinity = 'latest-docker'
+        buildCommand = "./build.sh --linux-portable --skip-prereqs --configuration ${configuration} --docker ${os} --targets Default"
+    }
     else {
         // Jenkins non-Ubuntu CI machines don't have docker
         buildCommand = "./build.sh --skip-prereqs --configuration ${configuration} --targets Default"
@@ -78,7 +84,7 @@ set DOTNET_CLI_UI_LANGUAGE=es
         }
     }
 
-    Utilities.setMachineAffinity(newJob, osUsedForMachineAffinity, 'latest-or-auto')
+    Utilities.setMachineAffinity(newJob, osUsedForMachineAffinity, osVersionUsedForMachineAffinity)
     Utilities.standardJobSetup(newJob, project, isPR, "*/${branch}")
     // ARM CI runs are build only.
     if ((architecture != 'arm') && (architecture != 'arm64')) {
