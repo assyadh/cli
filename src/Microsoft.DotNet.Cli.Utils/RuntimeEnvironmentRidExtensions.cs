@@ -21,7 +21,8 @@ namespace Microsoft.DotNet.Cli.Utils
         {
             if (RuntimeEnvironment.OperatingSystemPlatform != Platform.Windows)
             {
-                return RuntimeEnvironment.GetRuntimeIdentifier();
+                //return RuntimeEnvironment.GetRuntimeIdentifier();
+                return "linux-x64";
             }
             else
             {
