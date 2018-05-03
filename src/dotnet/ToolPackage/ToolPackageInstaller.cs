@@ -38,7 +38,9 @@ namespace Microsoft.DotNet.ToolPackage
             string[] additionalFeeds = null,
             string verbosity = null)
         {
+            System.Console.WriteLine("InstallPackage 1");
             var packageRootDirectory = _store.GetRootPackageDirectory(packageId);
+            System.Console.WriteLine("InstallPackage 2 " + packageRootDirectory);
             string rollbackDirectory = null;
 
             return TransactionalAction.Run<IToolPackage>(
@@ -46,9 +48,10 @@ namespace Microsoft.DotNet.ToolPackage
                     try
                     {
                         var stageDirectory = _store.GetRandomStagingDirectory();
+
                         Directory.CreateDirectory(stageDirectory.Value);
                         rollbackDirectory = stageDirectory.Value;
-
+                        System.Console.WriteLine("InstallPackage 3 " + rollbackDirectory);
                         var tempProject = CreateTempProject(
                             packageId: packageId,
                             versionRange: versionRange,
@@ -56,24 +59,31 @@ namespace Microsoft.DotNet.ToolPackage
                             restoreDirectory: stageDirectory,
                             rootConfigDirectory: rootConfigDirectory,
                             additionalFeeds: additionalFeeds);
-
+                        System.Console.WriteLine("InstallPackage 4 ");
                         try
                         {
+                            System.Console.WriteLine("InstallPackage 5 ");
                             _projectRestorer.Restore(
                                 tempProject,
                                 stageDirectory,
                                 nugetConfig,
                                 verbosity: verbosity);
+                            System.Console.WriteLine("InstallPackage 6 ");
                         }
                         finally
                         {
+                            System.Console.WriteLine("InstallPackage 7 ");
                             File.Delete(tempProject.Value);
+                            System.Console.WriteLine("InstallPackage 8 ");
                         }
 
                         var version = _store.GetStagedPackageVersion(stageDirectory, packageId);
+                        System.Console.WriteLine("InstallPackage 9 " + version);
                         var packageDirectory = _store.GetPackageDirectory(packageId, version);
+                        System.Console.WriteLine("InstallPackage 10 " + packageDirectory);
                         if (Directory.Exists(packageDirectory.Value))
                         {
+                            System.Console.WriteLine("InstallPackage 11");
                             throw new ToolPackageException(
                                 string.Format(
                                     CommonLocalizableStrings.ToolPackageConflictPackageId,
@@ -82,6 +92,7 @@ namespace Microsoft.DotNet.ToolPackage
                         }
 
                         Directory.CreateDirectory(packageRootDirectory.Value);
+                        System.Console.WriteLine("InstallPackage 12 " + packageRootDirectory.Value);
                         Directory.Move(stageDirectory.Value, packageDirectory.Value);
                         rollbackDirectory = packageDirectory.Value;
 
@@ -89,6 +100,7 @@ namespace Microsoft.DotNet.ToolPackage
                     }
                     catch (Exception ex) when (ex is UnauthorizedAccessException || ex is IOException)
                     {
+                        System.Console.WriteLine("InstallPackage 13 ");
                         throw new ToolPackageException(
                             string.Format(
                                 CommonLocalizableStrings.FailedToInstallToolPackage,
@@ -100,6 +112,7 @@ namespace Microsoft.DotNet.ToolPackage
                 rollback: () => {
                     if (!string.IsNullOrEmpty(rollbackDirectory) && Directory.Exists(rollbackDirectory))
                     {
+                        System.Console.WriteLine("InstallPackage 14 ");
                         Directory.Delete(rollbackDirectory, true);
                     }
 
@@ -107,6 +120,7 @@ namespace Microsoft.DotNet.ToolPackage
                     if (Directory.Exists(packageRootDirectory.Value) &&
                         !Directory.EnumerateFileSystemEntries(packageRootDirectory.Value).Any())
                     {
+                        System.Console.WriteLine("InstallPackage 15");
                         Directory.Delete(packageRootDirectory.Value, false);
                     }
                 });

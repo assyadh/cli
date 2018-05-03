@@ -33,15 +33,15 @@ namespace Microsoft.DotNet.ToolPackage.Tests
             var (store, installer, reporter, fileSystem) = Setup(
                 useMock: testMockBehaviorIsInSync,
                 feeds: GetMockFeedsForSource(source));
-
+            System.Console.WriteLine("before installer");
             var package = installer.InstallPackage(
                 packageId: TestPackageId,
                 versionRange: VersionRange.Parse(TestPackageVersion),
                 targetFramework: _testTargetframework,
                 additionalFeeds: new[] {source});
-
+            System.Console.WriteLine("after installer");
             package.PackagedShims.Should().ContainSingle(f => f.Value.Contains("demo.exe") || f.Value.Contains("demo"));
-
+            System.Console.WriteLine("before uninstall");
             package.Uninstall();
         }
 
