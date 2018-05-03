@@ -209,6 +209,7 @@ namespace Microsoft.DotNet.ToolPackage
                 return Array.Empty<FilePath>();
             }
 
+            System.Console.WriteLine("f.Path: " + f.Path);
             IEnumerable<string> allAvailableShimRuntimeIdentifiers = filesUnderShimsDirectory
                 .Select(f => f.Path.Split('\\', '/')?[4]) // ex: "tools/netcoreapp2.1/any/shims/osx-x64/demo" osx-x64 is at [4]
                 .Where(f => !string.IsNullOrEmpty(f));
