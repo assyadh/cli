@@ -52,7 +52,8 @@ namespace Microsoft.DotNet.Cli.Utils
             out string mostFitRuntimeIdentifier)
         {
             return TryGetMostFitRuntimeIdentifier(
-                RuntimeEnvironment.GetRuntimeIdentifier(),
+                //RuntimeEnvironment.GetRuntimeIdentifier(),
+                "linux-x64",
                 alternativeCurrentRuntimeIdentifier,
                 DependencyContext.RuntimeGraph,
                 candidateRuntimeIdentifiers,
