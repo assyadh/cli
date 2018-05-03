@@ -185,6 +185,7 @@ namespace Microsoft.DotNet.ToolPackage
             LockFileTargetLibrary library;
             try
             {
+                System.Console.WriteLine("Reading Package Shims");
                 LockFile lockFile = new LockFileFormat().Read(PackageDirectory.WithFile(AssetsFileName).Value);
                 library = FindLibraryInLockFile(lockFile);
             }
@@ -204,18 +205,20 @@ namespace Microsoft.DotNet.ToolPackage
 
             if (filesUnderShimsDirectory == null)
             {
+                System.Console.WriteLine("null Package Shims");
                 return Array.Empty<FilePath>();
             }
 
             IEnumerable<string> allAvailableShimRuntimeIdentifiers = filesUnderShimsDirectory
                 .Select(f => f.Path.Split('\\', '/')?[4]) // ex: "tools/netcoreapp2.1/any/shims/osx-x64/demo" osx-x64 is at [4]
                 .Where(f => !string.IsNullOrEmpty(f));
-
+            
             if (new FrameworkDependencyFile().TryGetMostFitRuntimeIdentifier(
                 DotnetFiles.VersionFileObject.BuildRid,
                 allAvailableShimRuntimeIdentifiers.ToArray(),
                 out var mostFitRuntimeIdentifier))
             {
+                System.Console.WriteLine("Found files Package Shims");
                 return library
                            ?.ToolsAssemblies
                            ?.Where(l =>
@@ -225,6 +228,7 @@ namespace Microsoft.DotNet.ToolPackage
             }
             else
             {
+                System.Console.WriteLine("No Found files Package Shims");
                 return Array.Empty<FilePath>();
             }
         }
