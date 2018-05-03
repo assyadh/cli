@@ -69,11 +69,20 @@ namespace Microsoft.DotNet.Cli.Utils
         {
             System.Console.WriteLine("currentRuntimeIdentifier: " + currentRuntimeIdentifier);
             System.Console.WriteLine("alternativeCurrentRuntimeIdentifier: " + alternativeCurrentRuntimeIdentifier);
+            foreach (var item in candidateRuntimeIdentifiers)
+            {
+                System.Console.WriteLine("candidateRuntimeIdentifiers: " + item);
+            }
+            foreach (var item in runtimeGraph)
+            {
+                System.Console.WriteLine("runtimeGraph: " + item.Runtime);
+            }
             mostFitRuntimeIdentifier = null;
             RuntimeFallbacks[] runtimeFallbacksCandidates;
 
             if (!string.IsNullOrEmpty(currentRuntimeIdentifier))
             {
+                System.Console.WriteLine("!string.IsNullOrEmpty(currentRuntimeIdentifier");
                 runtimeFallbacksCandidates =
                     runtimeGraph
                     .Where(g => string.Equals(g.Runtime, currentRuntimeIdentifier, StringComparison.OrdinalIgnoreCase))
