@@ -218,7 +218,11 @@ namespace Microsoft.DotNet.ToolPackage
                 .Where(f => !string.IsNullOrEmpty(f));
 
             System.Console.WriteLine("BuildRid: " + DotnetFiles.VersionFileObject.BuildRid);
-            System.Console.WriteLine("allAvailableShimRuntimeIdentifiers.ToArray(): " + allAvailableShimRuntimeIdentifiers.ToArray());
+            foreach (var item in allAvailableShimRuntimeIdentifiers)
+            {
+                System.Console.WriteLine("allAvailableShimRuntimeIdentifiers.ToArray(): " + item);
+            }
+            
             if (new FrameworkDependencyFile().TryGetMostFitRuntimeIdentifier(
                 DotnetFiles.VersionFileObject.BuildRid,
                 allAvailableShimRuntimeIdentifiers.ToArray(),
