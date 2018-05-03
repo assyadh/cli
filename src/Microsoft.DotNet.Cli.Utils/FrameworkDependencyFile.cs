@@ -53,7 +53,7 @@ namespace Microsoft.DotNet.Cli.Utils
         {
             return TryGetMostFitRuntimeIdentifier(
                 RuntimeEnvironment.GetRuntimeIdentifier(),
-  
+                //"linux-x64",
                 alternativeCurrentRuntimeIdentifier,
                 DependencyContext.RuntimeGraph,
                 candidateRuntimeIdentifiers,

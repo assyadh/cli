@@ -15,12 +15,11 @@ namespace Microsoft.DotNet.Tools.Test.Utilities
         {
             if (RuntimeEnvironment.OperatingSystemPlatform != Platform.Windows)
             {
-                /*
+                
                 FrameworkDependencyFile fxDepsFile = new FrameworkDependencyFile();
                 return fxDepsFile.SupportsCurrentRuntime() ?
                     RuntimeEnvironment.GetRuntimeIdentifier() :
-                    DotnetFiles.VersionFileObject.BuildRid;*/
-                return "linux-x64";
+                    DotnetFiles.VersionFileObject.BuildRid;
 
             }
             else
