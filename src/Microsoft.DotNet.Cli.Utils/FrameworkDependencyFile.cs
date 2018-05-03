@@ -66,6 +66,8 @@ namespace Microsoft.DotNet.Cli.Utils
             string[] candidateRuntimeIdentifiers,
             out string mostFitRuntimeIdentifier)
         {
+            System.Console.WriteLine("currentRuntimeIdentifier: " + currentRuntimeIdentifier);
+            System.Console.WriteLine("alternativeCurrentRuntimeIdentifier: " + alternativeCurrentRuntimeIdentifier);
             mostFitRuntimeIdentifier = null;
             RuntimeFallbacks[] runtimeFallbacksCandidates;
 
