@@ -212,7 +212,9 @@ namespace Microsoft.DotNet.ToolPackage
             IEnumerable<string> allAvailableShimRuntimeIdentifiers = filesUnderShimsDirectory
                 .Select(f => f.Path.Split('\\', '/')?[4]) // ex: "tools/netcoreapp2.1/any/shims/osx-x64/demo" osx-x64 is at [4]
                 .Where(f => !string.IsNullOrEmpty(f));
-            
+
+            System.Console.WriteLine("BuildRid: " + DotnetFiles.VersionFileObject.BuildRid);
+            System.Console.WriteLine("allAvailableShimRuntimeIdentifiers.ToArray(): " + allAvailableShimRuntimeIdentifiers.ToArray());
             if (new FrameworkDependencyFile().TryGetMostFitRuntimeIdentifier(
                 DotnetFiles.VersionFileObject.BuildRid,
                 allAvailableShimRuntimeIdentifiers.ToArray(),
@@ -229,6 +231,7 @@ namespace Microsoft.DotNet.ToolPackage
             else
             {
                 System.Console.WriteLine("No Found files Package Shims");
+                System.Console.WriteLine("mostFitRuntimeIdentifier: " + mostFitRuntimeIdentifier);
                 return Array.Empty<FilePath>();
             }
         }
