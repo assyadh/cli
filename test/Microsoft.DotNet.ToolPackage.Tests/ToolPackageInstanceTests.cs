@@ -25,7 +25,7 @@ namespace Microsoft.DotNet.ToolPackage.Tests
     {
         [Theory]
         [InlineData(false)]
-        [InlineData(true)]
+        //[InlineData(true)]
         public void GivenAnInstalledPackageUninstallRemovesThePackage(bool testMockBehaviorIsInSync)
         {
             var source = GetTestLocalFeedPath();
